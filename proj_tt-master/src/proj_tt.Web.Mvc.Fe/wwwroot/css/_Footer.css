@@ -1,0 +1,109 @@
+﻿.footer-top {
+    background: linear-gradient(135deg, #2c3e50, #3498db);
+    color: white;
+    padding: 60px 0 40px;
+}
+
+.footer-bottom {
+    background-color: #1a252f;
+    color: #7f8c8d;
+    padding: 20px 0;
+}
+
+.footer-links h5 {
+    color: #ecf0f1;
+    margin-bottom: 20px;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+    .footer-links h5::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 50px;
+        height: 2px;
+        background: #3498db;
+    }
+
+.footer-links ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-links li {
+    margin-bottom: 10px;
+}
+
+.footer-links a {
+    color: #bdc3c7;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+    .footer-links a:hover {
+        color: #3498db;
+        padding-left: 5px;
+    }
+
+.social-icons a {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 40px;
+    margin-right: 10px;
+    transition: all 0.3s ease;
+}
+
+    .social-icons a:hover {
+        background-color: #3498db;
+        transform: translateY(-3px);
+    }
+
+.newsletter-form .form-control {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: white;
+    height: 45px;
+}
+
+    .newsletter-form .form-control::placeholder {
+        color: #bdc3c7;
+    }
+
+.newsletter-form .btn-primary {
+    background-color: #3498db;
+    border: none;
+    height: 45px;
+}
+
+.back-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    background-color: #3498db;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+    .back-to-top.active {
+        opacity: 1;
+    }
+
+    .back-to-top:hover {
+        background-color: #2980b9;
+    }

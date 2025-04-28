@@ -1,0 +1,58 @@
+﻿@model proj_tt.Web.Models.Products.IndexViewHomeModel
+@{
+    ViewData["Title"] = "Chi tiết sản phẩm";
+    var product = Model.Product;
+}
+
+<div class="container mx-auto px-4 py-6 bg-white rounded-md shadow-sm mt-4">
+    <div class="flex flex-col md:flex-row gap-6">
+        <!-- Gallery -->
+        <div class="md:w-2/5">
+            <img id="main-image" src="@product.ImageUrl" alt="@product.Name" class="w-full h-96 object-contain rounded-md border" />
+        </div>
+
+        <!-- Product Info -->
+        <div class="md:w-3/5">
+            <h1 class="text-2xl font-semibold mb-2">@product.Name</h1>
+            <div class="mb-4 text-sm text-gray-500">Danh mục: <strong>@product.NameCategory</strong></div>
+
+            <div class="bg-gray-100 p-4 rounded-md mb-6">
+                <div class="flex items-end mb-2">
+                    <span class="text-3xl font-bold text-red-600">@product.Price.ToString("C")</span>
+                    @if (product.Discount > 0)
+                    {
+                        var priceOrigin = product.Price / (1 - product.Discount / 100m);
+                        <span class="text-lg text-gray-500 line-through ml-2">@priceOrigin.ToString("C")</span>
+                        <span class="bg-orange-500 text-white text-sm font-medium px-2 py-1 rounded ml-2">@product.Discount% OFF</span>
+                    }
+                </div>
+                <div class="text-sm text-gray-600">Kho còn: <strong>@product.Stock</strong> sản phẩm</div>
+            </div>
+
+            <!-- Description -->
+            <div class="mb-6 text-sm text-gray-700">
+                @Html.Raw(product.Description)
+            </div>
+
+            <!-- Số lượng -->
+            <div class="mb-6">
+                <h3 class="text-sm font-medium text-gray-700 mb-2">Số lượng:</h3>
+                <div class="flex items-center">
+                    <button id="decrease" class="border rounded-l-md px-3 py-1 text-lg">-</button>
+                    <input id="quantity" type="text" value="1" class="border-t border-b w-12 text-center py-1" />
+                    <button id="increase" class="border rounded-r-md px-3 py-1 text-lg">+</button>
+                </div>
+            </div>
+
+            <!-- Nút -->
+            <div class="flex flex-col sm:flex-row gap-3">
+                <button class="flex items-center justify-center py-3 px-6 rounded-md font-medium border border-orange-500 text-orange-500 hover:bg-orange-50">
+                    <i class="fas fa-shopping-cart mr-2"></i> Thêm vào giỏ
+                </button>
+                <button class="bg-orange-500 text-white flex items-center justify-center py-3 px-6 rounded-md font-medium hover:bg-orange-600">
+                    Mua ngay
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

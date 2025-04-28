@@ -1,0 +1,119 @@
+﻿@using proj_tt.Authorization
+@model proj_tt.Web.Models.Products.IndexViewModel
+@inject Abp.Authorization.IPermissionChecker PermissionChecker
+
+@{
+    ViewBag.Title = "Products";
+    ViewBag.ActiveMenu = "Products";
+  
+}
+
+@section scripts {
+    <environment names="Development">
+        <script src="~/view-resources/Views/Products/Index.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Development">
+        <script src="~/view-resources/Views/Products/_CreateProduct.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/view-resources/Views/Products/Index.min.js" asp-append-version="true"></script>
+    </environment>
+}
+
+<link rel="stylesheet" href="~/css/_IndexProduct.css" />
+<!-- Header -->
+<section class="content-header mb-4">
+    <div class="container-fluid">
+        <div class="row align-items-center justify-content-between">
+            <div class="col-auto">
+                <h1 class="mb-0">@L("Product")</h1>
+            </div>
+            <div class="col-auto">
+                @if (PermissionChecker.IsGranted("Pages.Products.Create"))
+                {
+                    <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#createModal">
+                        <i class="fa fa-plus mr-1"></i> @L("Create")
+                    </button>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Main -->
+<section>
+    <div class="container-fluid">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-white border-bottom">
+                <div class="row align-items-center">
+                    <!-- Date Filter -->
+                    <div class="col-md-6">
+                        <button class="btn btn-outline-primary btn-sm mb-2" data-toggle="collapse" data-target="#dateFilter">
+                            <i class="fa fa-calendar-alt mr-1"></i> @L("FilterByDate")
+                        </button>
+
+                        <div id="dateFilter" class="collapse mt-2">
+                            <form id="ProductSearchByExpiry" class="form-inline flex-wrap">
+                                <div class="form-group mx-2 mb-2">
+                                    <label for="StartDate" class="mr-2">@L("Start date")</label>
+                                    <input type="date" class="form-control form-control-sm" id="StartDate" name="startDate" />
+                                </div>
+                                <div class="form-group mx-2 mb-2">
+                                    <label for="EndDate" class="mr-2">@L("End date")</label>
+                                    <input type="date" class="form-control form-control-sm" id="EndDate" name="endDate" />
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-sm mb-2">
+                                    <i class="fa fa-filter mr-1"></i> @L("Filter")
+                                </button>
+                            </form>
+
+                        </div>
+                    </div>
+
+                    <!-- Advanced Search -->
+                    <div class="col-md-6 text-md-right mt-2 mt-md-0">
+                        @await Html.PartialAsync("~/Views/Product/Index.AdvancedSearch.cshtml")
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table -->
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="ProductsTable" class="table table-hover table-bordered table-striped text-center align-middle">
+                        <thead class="thead-light">
+                            <tr>
+                                <th></th>
+                                <th>@L("Name")</th>
+                                <th>@L("Price")</th>
+                                <th>@L("Discount")</th>
+                                <th>@L("ImageUrl")</th>
+                                <th>@L("CategoryName")</th>
+                                <th>@L("Description")</th>
+                                <th>@L("Stock")</th>
+                                <th>@L("ExpiryDate")</th>
+                                <th>@L("CreationTime")</th>
+                                <th>@L("UpdateTime")</th>
+                                <th style="width: 150px">@L("Actions")</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Modal tạo sản phẩm -->
+@await Html.PartialAsync("~/Views/Product/_CreateModal.cshtml", Model)
+
+<!-- Modal chỉnh sửa -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" data-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content rounded-lg shadow-sm border-0">
+            <!-- Nội dung sẽ được load bằng JS -->
+        </div>
+    </div>
+</div>
+

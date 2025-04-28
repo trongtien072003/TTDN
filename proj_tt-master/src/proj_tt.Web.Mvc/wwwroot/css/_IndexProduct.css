@@ -1,0 +1,71 @@
+﻿/* Tổng thể card */
+/*.card {
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}*/
+
+/* Nút tạo sản phẩm */
+/*.btn.bg-blue {
+    background-color: #007bff;
+    color: white;
+    transition: 0.3s ease;
+    border-radius: 8px;
+}
+
+    .btn.bg-blue:hover {
+        background-color: #0056b3;
+        color: white;
+    }*/
+
+/* Tiêu đề trang */
+/*.content-header h1 {
+    font-size: 28px;
+    font-weight: bold;
+}*/
+
+/* Form lọc ngày */
+/*.abp-advanced-searchbyexpirydate label {
+    font-weight: 500;
+    display: flex;
+    margin-bottom: 0;
+}
+
+.abp-advanced-searchbyexpirydate .form-control {
+    min-width: 140px;
+}*/
+
+/* Bảng sản phẩm */
+/*#ProductsTable {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+}
+
+    #ProductsTable th,
+    #ProductsTable td {
+        text-align: center;
+        vertical-align: middle;
+    }*/
+
+/* Responsive */
+/*@media (max-width: 768px) {
+    .abp-advanced-searchbyexpirydate {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+        .abp-advanced-searchbyexpirydate .form-group {
+            margin-bottom: 10px;
+        }
+}*/
+
+/* Modal chỉnh sửa */
+/*#editModal .modal-content {
+    border-radius: 10px;
+    padding: 20px;
+}*/
+
+/* Hành động bảng */
+/*.table td .btn {
+    margin: 0 2px;
+}*/

@@ -1,0 +1,63 @@
+﻿@model proj_tt.Web.Models.Share.IndexShareModel
+
+
+<div class="modal-header">
+    <h5 class="modal-title">Chỉnh sửa sản phẩm</h5>
+    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<div class="modal-body">
+    <form id="EditProductForm">
+        @* Các input như: Name, Price, Description, Image *@
+        <div class="form-group">
+            <label>Tên sản phẩm</label>
+            <input type="text" name="Name" value="@Model.Product.Name" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label>Giá</label>
+            <input type="number" name="Price" value="@Model.Product.Price" class="form-control" />
+        </div>
+
+        @* Thêm các trường khác *@
+    </form>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+    <button type="submit" class="btn btn-primary" form="EditProductForm">Lưu thay đổi</button>
+</div>
+
+@{
+    var salePrice = Model.Product.Price * (1 - Model.Product.Discount / 100.0m);
+}
+
+<div class="modal-header">
+    <h5 class="modal-title">@Model.Product.Name</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-5">
+            <img src="@Model.Product.ImageUrl" class="img-fluid" alt="@Model.Product.Name" />
+        </div>
+        <div class="col-md-7">
+            <p><strong>Danh mục:</strong> @Model.Product.NameCategory</p>
+            <p>
+                <strong>Giá:</strong>
+                @if (Model.Product.Discount > 0)
+                {
+                    <span class="text-danger">@salePrice.ToString("N0") ₫</span>
+                    <span class="text-muted text-decoration-line-through ms-2">@Model.Product.Price.ToString("N0") ₫</span>
+                }
+                else
+                {
+                    <span>@Model.Product.Price.ToString("N0") ₫</span>
+                }
+            </p>
+            <p>@Model.Product.Description</p>
+        </div>
+    </div>
+</div>
