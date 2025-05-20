@@ -8,6 +8,8 @@ namespace proj_tt.Products
 {
     public interface IProductAppService : IApplicationService
     {
+
+
         Task<ProductDto> GetProductDetail(int id);
 
         Task<PagedResultDto<ProductDto>> GetProductPaged(PagedProductDto input);
@@ -18,6 +20,6 @@ namespace proj_tt.Products
 
         System.Threading.Tasks.Task Delete(int id);
         Task<List<ProductListDto>> GetAllAsync();
-      
+
     }
 }

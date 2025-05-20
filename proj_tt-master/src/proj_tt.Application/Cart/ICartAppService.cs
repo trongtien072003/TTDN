@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,10 +11,10 @@ namespace proj_tt.Cart
 {
     public interface ICartAppService : IApplicationService
     {
-        Task<CartDto> GetCartAsync();
-        Task AddToCart(AddToCartInput input);
-        Task UpdateCartItem(UpdateCartItemInput input);
-        Task RemoveFromCart(RemoveFromCartInput input);
-        Task Checkout();
+        Task<List<CartItemDto>> GetCartItemsByUserIdAsync();
+        Task AddToCartAsync(AddToCartInput input);
+        Task UpdateCartItemQuantityAsync(UpdateCartItemInput input);
+        Task RemoveCartItemAsync(RemoveFromCartInput input);
+        Task ClearCartAsync();
     }
 }

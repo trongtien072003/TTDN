@@ -38,7 +38,7 @@ const loadProducts = (keyword = '', page = 1) => {
                     <div class="card h-100 position-relative">
                         ${badgeHTML}
                         <div class="card-img-wrapper d-flex justify-content-center align-items-center" style="height: 150px; background-color: #f9fafb;">
-                            <img src="${product.imageUrl || 'https://via.placeholder.com/150x100?text=No+Image'}"
+                            <img src="${product.imageUrl }"
                                  alt="${product.name}"
                                  style="max-height: 100%; max-width: 100%; object-fit: contain;">
                         </div>
@@ -47,9 +47,9 @@ const loadProducts = (keyword = '', page = 1) => {
                             <p class="card-text text-muted">${product.description || ''}</p>
                             <div class="text-warning mb-2">★★★★★ <span class="text-secondary small">(${product.reviewCount || 0})</span></div>
                             ${priceHTML}
-                            <a href="/Product/Detail/${product.id}?finalPrice=${finalPrice.toFixed(0)}" 
-                               class="view-more text-center d-block mt-2 text-decoration-none text-primary" 
-                               style="display: none;">Xem thêm</a>
+                           <a href="/Home/Detail/${product.id}" 
+   class="view-more text-center d-block mt-2 text-decoration-none text-primary" 
+   style="display: none;">Xem thêm</a>
                         </div>
                     </div>
                 </div>

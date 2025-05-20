@@ -16,10 +16,12 @@
         public const string Pages_Products_Delete = "Pages.Products.Delete";
 
         public const string Pages_Orders = "Pages.Orders";
-        public const string Pages_Orders_Create = "Pages.Orders.Create";
-        public const string Pages_Orders_Edit = "Pages.Orders.Edit";
-        public const string Pages_Orders_Delete = "Pages.Orders.Delete";
+        public const string Pages_Orders_Admin = "Pages.Orders.Admin"; 
         public const string Pages_Orders_View = "Pages.Orders.View";
+        public const string Pages_Orders_Update = "Pages.Orders.Update";
+        public const string Pages_Orders_Delete = "Pages.Orders.Delete";
+        public const string Pages_Orders_Restore = "Pages.Orders.Restore";
+        public const string Pages_Orders_Export = "Pages.Orders.Export";
 
         //Thêm quyền cho cart
         public const string Pages_Cart = "Pages.Cart";

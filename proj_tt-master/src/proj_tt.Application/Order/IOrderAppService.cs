@@ -12,10 +12,11 @@ namespace proj_tt.Order
 {
     public interface IOrderAppService : IApplicationService
     {
-        Task<OrderDto> GetOrder(long id);
-        //System.Threading.Tasks.Task Create(O input);
-        Task<PagedResultDto<OrderDto>> GetAllOrders(PagedOrderResultRequestDto input);
-        Task UpdateOrderStatus(UpdateOrderStatusInput input);
-        Task DeleteOrder(long id);
+        Task<OrderDto> GetOrderAsync(long id);
+        Task<PagedResultDto<OrderDto>> GetAllAsync(PagedOrderRequestDto input);
+        Task UpdateStatusAsync(UpdateOrderStatusInput input);
+        Task DeleteAsync(long id);
+        Task RestoreAsync(long id);
+        Task<FileDto> ExportAllToFileAsync();
     }
 }

@@ -1,81 +1,86 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Abp.AspNetCore.Mvc.Authorization;
 using proj_tt.Controllers;
-using proj_tt.Categories.Dto;
 using proj_tt.Categories;
-using proj_tt.Products.Dto;
+using proj_tt.Categories.Dto;
 using proj_tt.Products;
-using System.Threading.Tasks;
-using System.Linq;
-using Microsoft.AspNetCore.Mvc.Rendering;
+using proj_tt.Products.Dto;
 using proj_tt.Web.Models.Products;
-using Abp.Authorization;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
+using System.Linq;
+using System.Threading.Tasks;
+using Abp.Application.Services.Dto;
+using Microsoft.AspNetCore.Authorization;
+using Abp.Authorization;
 
 namespace proj_tt.Web.Controllers
 {
+ 
     public class HomeController : proj_ttControllerBase
     {
+        private readonly IUserProductAppService _userProductAppService;
+        private readonly ICategoriesFrontendAppService _categoryFrontendAppService;
 
-        private readonly IProductAppService _productAppService;
-        private readonly ICategoriesAppService _categoryAppService;
-
-        public HomeController(IProductAppService productAppService, ICategoriesAppService categoryAppService)
+        public HomeController(IUserProductAppService userProductAppService, ICategoriesFrontendAppService categoryFrontendAppService)
         {
-            _productAppService = productAppService;
-            _categoryAppService = categoryAppService;
+            _userProductAppService = userProductAppService;
+            _categoryFrontendAppService = categoryFrontendAppService;
         }
         [AbpAuthorize]
+        [HttpGet]
         public async Task<ActionResult> Index()
         {
-            var products = await _productAppService.GetProductPaged(new PagedProductDto());
+            var products = await _userProductAppService.GetAllAsync(new PagedProductDto());
 
-            var categories = await _categoryAppService.GetAllCategories(new PagedCategoriesDto());
-            var categoriesItems = categories.Items.Select(c => new SelectListItem
+            var categories = await _categoryFrontendAppService.GetAll(new PagedCategoriesDto());
+            var categoryItems = categories.Items.Select(c => new SelectListItem
             {
                 Value = c.Id.ToString(),
                 Text = c.NameCategory
             }).ToList();
-            var model = new IndexViewHomeModel(products.Items, categoriesItems);
+
+            var model = new IndexViewHomeModel(products.Items, categoryItems);
             return View(model);
         }
-        [HttpPost]
-        [Route("Product/DetailModal")]
-        [AllowAnonymous]
-        public async Task<PartialViewResult> DetailModal(int productId)
+
+        [HttpGet("/Home/Detail/{id}")]
+        public async Task<IActionResult> Detail(int id)
         {
-            var product = await _productAppService.GetProductDetail(productId);
-            return PartialView("_ProductDetailModal", product);
+            if (id <= 0)
+                return BadRequest("ID sản phẩm không hợp lệ");
+
+            var productDto = await _userProductAppService.GetAsync(new EntityDto<int>(id));
+
+            // ✅ Trả về View với model là ProductDto
+            return View("Detail", productDto);
         }
-       
+
+
+
+        [HttpGet("Home/Page")]
         public async Task<ActionResult> Page(int pageNumber = 1, int pageSize = 10)
         {
-            // Giới hạn đầu vào hợp lệ
             pageNumber = Math.Max(pageNumber, 1);
             pageSize = Math.Max(pageSize, 1);
 
-            // Tạo DTO gọi dịch vụ
             var input = new PagedProductDto
             {
                 SkipCount = (pageNumber - 1) * pageSize,
                 MaxResultCount = pageSize
             };
 
-            // Gọi AppService lấy dữ liệu
-            var products = await _productAppService.GetProductPaged(input);
-            var categories = await _categoryAppService.GetAllCategories(new PagedCategoriesDto());
+            var products = await _userProductAppService.GetAllAsync(input);
+            var categories = await _categoryFrontendAppService.GetAll(new PagedCategoriesDto());
 
-            var categoriesItems = categories.Items.Select(c => new SelectListItem
+            var categoryItems = categories.Items.Select(c => new SelectListItem
             {
                 Value = c.Id.ToString(),
                 Text = c.NameCategory
             }).ToList();
 
             var totalPages = (int)Math.Ceiling(products.TotalCount / (double)pageSize);
-            pageNumber = Math.Min(pageNumber, totalPages == 0 ? 1 : totalPages); // xử lý khi không có sản phẩm
 
-            var model = new IndexViewHomeModel(products.Items, categoriesItems)
+            var model = new IndexViewHomeModel(products.Items, categoryItems)
             {
                 CurrentPage = pageNumber,
                 PageSize = pageSize,
@@ -87,8 +92,5 @@ namespace proj_tt.Web.Controllers
 
             return View("Index", model);
         }
-
-
-
     }
 }

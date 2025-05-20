@@ -12,6 +12,9 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="MiniExcel" Version="1.41.1" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\proj_tt.Core\proj_tt.Core.csproj" />
   </ItemGroup>
 </Project>

@@ -86,15 +86,18 @@
                                 <a href="#" class="nav-link dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown">
                                     <i class="fas fa-user-circle fs-5"></i>
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-end">
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <a class="dropdown-item" asp-controller="UserOrder" asp-action="Index">
+                                    <i class="fas fa-box-open me-2"></i> @L("MyOrder")
+                                </a>
                                 <a class="dropdown-item" asp-controller="Users" asp-action="ChangePassword">
-                                    <i class="fas fa-user-edit"></i> @L("UpdatePassword")
+                                    <i class="fas fa-user-edit me-2"></i> @L("UpdatePassword")
                                 </a>
                                 <a class="dropdown-item" asp-controller="Account" asp-action="Logout">
-                                    <i class="fas fa-sign-out-alt"></i> @L("Logout")
+                                    <i class="fas fa-sign-out-alt me-2"></i> @L("Logout")
                                 </a>
                                 <li><a class="dropdown-item" href="/account/register"><i class="fas fa-sign-out-alt me-2"></i>Register</a></li>
-                                </ul>
+                            </ul>
                             </div>
                         </div>
                     </div>

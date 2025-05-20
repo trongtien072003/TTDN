@@ -5,10 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Abp.Domain.Entities.Auditing;
 using Abp.Domain.Entities;
+using Abp.AutoMapper;
 
 namespace proj_tt.Order
 {
-    public class OrderItem : Entity<long>, IHasCreationTime, IHasModificationTime
+    [AutoMapFrom(typeof(Orders))]
+    public class OrderItem : FullAuditedEntity<long>
     {
         public long OrderId { get; set; }
         public int ProductId { get; set; }

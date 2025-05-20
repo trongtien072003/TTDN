@@ -14,6 +14,9 @@ namespace proj_tt.Products.Dto
         
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
+        public bool? ExpiryOnly { get; set; }
+        public int? CategoryId { get; set; }
+        public string CategoryName { get; set; }
         public decimal? MinPrice { get; set; } 
         public decimal? MaxPrice { get; set; }
 

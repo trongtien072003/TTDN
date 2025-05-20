@@ -1,0 +1,51 @@
+﻿@model proj_tt.Web.Models.Order.AdminOrderListViewModel
+@using proj_tt.Order
+
+@{
+    ViewBag.Title = L("OrderManagement");
+}
+
+<h2>@L("OrderManagement")</h2>
+
+<form id="OrderSearchForm" method="get" class="mb-3">
+    <div class="row g-2">
+        <div class="col-md-3">
+            <input type="text" name="keyword" value="@Model.Keyword" class="form-control" placeholder="@L("SearchByNameOrEmail")" />
+        </div>
+        <div class="col-md-2">
+            <select name="status" class="form-control">
+                <option value="">@L("AllStatuses")</option>
+                @foreach (OrderStatus status in Enum.GetValues(typeof(OrderStatus)))
+                {
+                      var isSelected = Model.Status == status ? "selected" : "";
+    @:<option value="@status" @isSelected>@L(status.ToString())</option>
+
+                }
+            </select>
+        </div>
+        <div class="col-md-2">
+            <input type="date" name="minDate" value="@(Model.MinDate?.ToString("yyyy-MM-dd"))" class="form-control" placeholder="@L("FromDate")" />
+        </div>
+        <div class="col-md-2">
+            <input type="date" name="maxDate" value="@(Model.MaxDate?.ToString("yyyy-MM-dd"))" class="form-control" placeholder="@L("ToDate")" />
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary w-100">@L("Search")</button>
+        </div>
+        <div class="col-md-1">
+            <a href="@Url.Action("Export", "AdminOrder")" class="btn btn-success w-100">
+                <i class="fas fa-file-export"></i> @L("Export")
+            </a>
+        </div>
+    </div>
+</form>
+
+<table id="OrdersTable" class="table table-bordered table-hover mt-4 w-100"></table>
+
+<!-- Modal placeholders -->
+<div id="OrderDetailModalContainer"></div>
+<div id="OrderEditModalContainer"></div>
+
+@section scripts {
+    <script src="~/view-resources/Views/Orders/Index.js" asp-append-version="true"></script>
+}

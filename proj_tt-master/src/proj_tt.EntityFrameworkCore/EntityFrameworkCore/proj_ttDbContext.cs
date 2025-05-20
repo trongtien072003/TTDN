@@ -56,6 +56,8 @@ namespace proj_tt.EntityFrameworkCore
                 b.ToTable("Orders");
                 b.Property(x => x.UserId).IsRequired();
                 b.Property(x => x.UserName).IsRequired().HasMaxLength(256);
+                b.Property(x => x.PhoneNumber).IsRequired().HasMaxLength(20);
+                b.Property(x => x.Address).IsRequired().HasMaxLength(512);
                 b.Property(x => x.UserEmail).IsRequired().HasMaxLength(256);
                 b.Property(x => x.TotalAmount).IsRequired();
                 b.Property(x => x.Status).IsRequired();

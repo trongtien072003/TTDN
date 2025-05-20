@@ -18,11 +18,14 @@ namespace proj_tt.Authorization
             productPermission.CreateChildPermission(PermissionNames.Pages_Products_Edit, L("EditProduct"));
             productPermission.CreateChildPermission(PermissionNames.Pages_Products_Delete, L("DeleteProduct"));
 
-            var ordersPermission = context.CreatePermission(PermissionNames.Pages_Orders, L("Orders"));
-            ordersPermission.CreateChildPermission(PermissionNames.Pages_Orders_Create, L("CreateNewOrder"));
-            ordersPermission.CreateChildPermission(PermissionNames.Pages_Orders_Edit, L("EditOrder"));
-            ordersPermission.CreateChildPermission(PermissionNames.Pages_Orders_Delete, L("DeleteOrder"));
-            ordersPermission.CreateChildPermission(PermissionNames.Pages_Orders_View, L("ViewOrder"));
+            var order = context.CreatePermission(PermissionNames.Pages_Orders, L("Orders"));
+            var admin = order.CreateChildPermission(PermissionNames.Pages_Orders_Admin, L("Admin"));
+
+            admin.CreateChildPermission(PermissionNames.Pages_Orders_View, L("View Orders"));
+            admin.CreateChildPermission(PermissionNames.Pages_Orders_Update, L("Update Orders"));
+            admin.CreateChildPermission(PermissionNames.Pages_Orders_Delete, L("Delete Orders"));
+            admin.CreateChildPermission(PermissionNames.Pages_Orders_Restore, L("Restore Orders"));
+            admin.CreateChildPermission(PermissionNames.Pages_Orders_Export, L("Export Orders"));
 
             // Cart permissions
             var cartPermission = context.CreatePermission(PermissionNames.Pages_Cart, L("Cart"));

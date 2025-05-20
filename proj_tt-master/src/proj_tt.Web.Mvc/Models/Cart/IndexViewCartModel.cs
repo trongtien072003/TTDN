@@ -22,5 +22,6 @@ namespace proj_tt.Web.Models.Cart
         public int Quantity { get; set; }
         public decimal TotalPrice { get; set; }
         public string ImageUrl { get; set; }
+        public string ProductImage { get; internal set; }
     }
 }

@@ -1,70 +1,78 @@
-﻿using Abp.AspNetCore.Mvc.Authorization;
-using Abp.Domain.Repositories;
-using Microsoft.AspNetCore.Mvc;
-using proj_tt.Cart.Dto;
-using proj_tt.Cart;
-using proj_tt.Products;
+﻿using System.Linq;
 using System.Threading.Tasks;
+using Abp.AspNetCore.Mvc.Authorization;
+using Abp.UI;
+using Microsoft.AspNetCore.Mvc;
+using proj_tt.Cart;
+using proj_tt.Cart.Dto;
 using proj_tt.Controllers;
-using System.Linq;
 using proj_tt.Web.Models.Cart;
 
 namespace proj_tt.Web.Controllers
 {
+    [Route("cart")]
     [AbpMvcAuthorize]
+
     public class CartController : proj_ttControllerBase
     {
         private readonly ICartAppService _cartAppService;
-        private readonly IRepository<Product, int> _productRepository;
 
-        public CartController(
-            ICartAppService cartAppService,
-            IRepository<Product, int> productRepository)
+        public CartController(ICartAppService cartAppService)
         {
             _cartAppService = cartAppService;
-            _productRepository = productRepository;
         }
-        [Route("Cart")]
+
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var cartDto = await _cartAppService.GetCartAsync();
+            var cartItems = await _cartAppService.GetCartItemsByUserIdAsync();
 
-            var model = new IndexViewCartModel
+            var model = new CartViewModel
             {
-                Items = cartDto.Items.Select(item => new IndexViewCartItemModel
+                Items = cartItems.Select(x => new CartItemViewModel
                 {
-                    ProductId = item.ProductId,
-                    ProductName = item.ProductName,
-                    Price = item.Price,
-                    ImageUrl =item.ImageUrl,
-                    Quantity = item.Quantity,
-                    TotalPrice = item.Price * item.Quantity
-                }).ToList(),
-                TotalPrice = cartDto.TotalPrice,
-                UserId = cartDto.UserId
+                    Id = x.Id,
+                    ProductId = x.ProductId,
+                    ProductName = x.ProductName,
+                    Quantity = x.Quantity,
+                    UnitPrice = x.UnitPrice,
+                    TotalPrice = x.TotalPrice
+                }).ToList()
             };
 
-            return View(model);
-        }
-        [Route("api/app/cart/add-to-cart")]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<JsonResult> AddToCart([FromBody] AddToCartInput input)
-        {
-            await _cartAppService.AddToCart(input);
-            return Json(new { success = true });
+            return View(model); // Views/Cart/Index.cshtml
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> RemoveFromCart(int productId)
+        [HttpPost("add")]
+        public async Task<IActionResult> Add(AddToCartInput input)
         {
-            var input = new RemoveFromCartInput { ProductId = productId };
-            await _cartAppService.RemoveFromCart(input);
-
-            TempData["SuccessMessage"] = "Đã xóa sản phẩm khỏi giỏ hàng.";
+            await _cartAppService.AddToCartAsync(input);
+            TempData["Message"] = "🛒 Đã thêm sản phẩm vào giỏ hàng.";
             return RedirectToAction("Index");
         }
 
+        [HttpPost("update-quantity")]
+        public async Task<IActionResult> UpdateQuantity(UpdateCartItemInput input)
+        {
+            await _cartAppService.UpdateCartItemQuantityAsync(input);
+            TempData["Message"] = "✔️ Cập nhật số lượng sản phẩm.";
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost("remove-item")]
+        public async Task<IActionResult> RemoveItem(RemoveFromCartInput input)
+        {
+            await _cartAppService.RemoveCartItemAsync(input);
+            TempData["Message"] = "🗑️ Đã xóa sản phẩm khỏi giỏ hàng.";
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost("clear")]
+        public async Task<IActionResult> Clear()
+        {
+            await _cartAppService.ClearCartAsync();
+            TempData["Message"] = "🧹 Đã xóa toàn bộ giỏ hàng.";
+            return RedirectToAction("Index");
+        }
     }
 }

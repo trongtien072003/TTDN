@@ -8,11 +8,10 @@ using Abp.Domain.Entities;
 
 namespace proj_tt.Cart
 {
-    public class Carts : Entity<long>, IHasCreationTime, IHasModificationTime
+    public class Carts : FullAuditedEntity<long>
     {
         public long UserId { get; set; }
-        public DateTime CreationTime { get; set; }
-        public DateTime? LastModificationTime { get; set; }
+   
         public virtual ICollection<CartItem> Items { get; set; }
 
         public Carts()

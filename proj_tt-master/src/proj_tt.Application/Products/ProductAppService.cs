@@ -69,16 +69,17 @@ namespace proj_tt.Products
                     p.Name.ToLower().Contains(keyword) ||
                     p.Price.ToString().Contains(keyword) ||
                     p.Discount.ToString().Contains(keyword) ||
-                    p.Category.NameCategory.ToLower().Contains(keyword)||
+                    p.Category.NameCategory.ToLower().Contains(keyword) ||
                     p.CreationTime.ToString().Contains(keyword) ||
                     p.Description.ToLower().Contains(keyword) ||
                     p.Stock.ToString().Contains(keyword) ||
-                    p.ExpiryDate.ToString().Contains(keyword) 
+                    p.ExpiryDate.ToString().Contains(keyword)
                 );
             }
-            if (input.StartDate.HasValue) {
+            if (input.StartDate.HasValue)
+            {
                 products = products.Where(p => p.ExpiryDate >= input.StartDate.Value);
-              }
+            }
             if (input.EndDate.HasValue)
             {
                 products = products.Where(p => p.ExpiryDate <= input.EndDate.Value);
@@ -182,7 +183,7 @@ namespace proj_tt.Products
         public async Task<List<ProductListDto>> GetAllAsync()
         {
             var products = await _productRepository
-                .GetAllIncluding(p => p.Category) 
+                .GetAllIncluding(p => p.Category)
                 .OrderByDescending(p => p.CreationTime)
                 .ToListAsync();
 

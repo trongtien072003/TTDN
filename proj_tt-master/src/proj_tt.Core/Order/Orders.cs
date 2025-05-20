@@ -14,6 +14,8 @@ namespace proj_tt.Order
         public decimal TotalAmount { get; set; }
         public OrderStatus Status { get; set; }
         public string Note { get; set; }
+        public string PhoneNumber { get; set; }
+        public string Address { get; set; }
         public long? UserId { get; set; }
 
         public virtual ICollection<OrderItem> OrderItems { get; set; }

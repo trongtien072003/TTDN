@@ -46,15 +46,15 @@ namespace proj_tt.Web.Startup
                     )
                 )
                 .AddItem(
-                    new MenuItemDefinition(
-                        PageNames.Orders,
-                        L("Orders"),
-                        url: "Orders",
-                        icon: "fas fa-clipboard-list",
-                        requiresAuthentication: true,
-                        permissionDependency: new SimplePermissionDependency(PermissionNames.Pages_Orders)
-                    )
-                ).AddItem(
+    new MenuItemDefinition(
+        PageNames.Orders,
+        L("Orders"),
+        url: "admin/orders", 
+        icon: "fas fa-clipboard-list",
+        requiresAuthentication: true,
+        permissionDependency: new SimplePermissionDependency(PermissionNames.Pages_Orders)
+    )
+).AddItem(
                     new MenuItemDefinition(
                         PageNames.Products,
                         L("Product"),

@@ -8,7 +8,7 @@
 @section scripts
 {
     <environment names="Development">
-       
+
         <script src="~/view-resources/Views/Home/Index.js" asp-append-version="true"></script>
     </environment>
     <link href="~/css/home.css " rel="stylesheet" />
@@ -17,7 +17,7 @@
 
 
 <main class="product-dashboard">
-   
+
     @if (Model.Products != null && Model.Products.Any())
     {
         <div id="productCarousel" class="carousel slide mb-5" data-bs-ride="carousel">

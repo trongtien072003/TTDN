@@ -1,0 +1,75 @@
+﻿@using proj_tt.Order
+@model proj_tt.Order.Dto.OrderDto
+
+<div class="modal fade" id="OrderEditModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="OrderEditForm">
+                <input type="hidden" name="Id" value="@Model.Id" />
+                <div class="modal-header">
+                    <h5 class="modal-title">Cập nhật đơn hàng #@Model.Id</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Ghi chú</label>
+                        <textarea name="Note" class="form-control">@Model.Note</textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Trạng thái</label>
+                        <select name="Status" class="form-control">
+                            @foreach (OrderStatus status in Enum.GetValues(typeof(OrderStatus)))
+                            {
+                                var selected = Model.Status == status ? "selected" : "";
+                                var value = (int)status;
+                            @:<option value="@value" @selected>@L(status.ToString())</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Lưu</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+$(document).on('submit', '#OrderEditForm', function (e) {
+    e.preventDefault();
+
+    const $form = $(this);
+    const formData = {
+        id: parseInt($form.find('input[name="Id"]').val()),
+        note: $form.find('textarea[name="Note"]').val(),
+        status: parseInt($form.find('select[name="Status"]').val())
+    };
+
+    if (!formData.id || isNaN(formData.status)) {
+        return abp.message.error("Thiếu hoặc sai dữ liệu.");
+    }
+
+    abp.message.confirm("Bạn có chắc muốn cập nhật đơn hàng?", "Xác nhận", function (confirmed) {
+        if (!confirmed) return;
+
+        abp.ajax({
+            url: abp.appPath + 'admin/orders/update-status',
+            type: 'POST',
+            data: JSON.stringify(formData),
+            contentType: 'application/json',
+        }).done(function () {
+            abp.notify.success("Đã cập nhật đơn hàng.");
+            $('#OrderEditModal').modal('hide');
+            $('#OrdersTable').DataTable().ajax.reload();
+        }).fail(function (error) {
+            const msg = error?.responseJSON?.error?.message || "Có lỗi xảy ra.";
+            abp.message.error(msg);
+        });
+    });
+});
+function closeEditModal() {
+    $('#OrderEditModal').modal('hide');
+}
+</script>

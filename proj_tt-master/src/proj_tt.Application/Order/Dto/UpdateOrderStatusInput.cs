@@ -9,7 +9,8 @@ namespace proj_tt.Order.Dto
 {
     public class UpdateOrderStatusInput : EntityDto<long>
     {
-        public OrderStatus Status { get; set; }
+        public long Id { get; set; }
+        public int Status { get; set; }
         public string Note { get; set; }
     }
 }
