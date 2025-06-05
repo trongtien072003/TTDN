@@ -4,44 +4,44 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Chi tiết đơn hàng #@Model.Id</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+                <h5 class="modal-title">@L("OrderDetail") #@Model.Id</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@L("Close")"></button>
             </div>
             <div class="modal-body">
                 <dl class="row">
-                    <dt class="col-sm-3">Tên khách hàng</dt>
+                    <dt class="col-sm-3">@L("CustomerName")</dt>
                     <dd class="col-sm-9">@Model.UserName</dd>
 
-                    <dt class="col-sm-3">Email</dt>
+                    <dt class="col-sm-3">@L("Email")</dt>
                     <dd class="col-sm-9">@Model.UserEmail</dd>
 
-                    <dt class="col-sm-3">Số điện thoại</dt>
+                    <dt class="col-sm-3">@L("PhoneNumber")</dt>
                     <dd class="col-sm-9">@Model.PhoneNumber</dd>
 
-                    <dt class="col-sm-3">Địa chỉ</dt>
+                    <dt class="col-sm-3">@L("Address")</dt>
                     <dd class="col-sm-9">@Model.Address</dd>
 
-                    <dt class="col-sm-3">Trạng thái</dt>
-                    <dd class="col-sm-9">@Model.Status</dd>
+                    <dt class="col-sm-3">@L("Status")</dt>
+                    <dd class="col-sm-9">@L(Model.Status.ToString())</dd>
 
-                    <dt class="col-sm-3">Ghi chú</dt>
+                    <dt class="col-sm-3">@L("Note")</dt>
                     <dd class="col-sm-9">@Model.Note</dd>
 
-                    <dt class="col-sm-3">Tổng tiền</dt>
+                    <dt class="col-sm-3">@L("TotalAmount")</dt>
                     <dd class="col-sm-9">@Model.TotalAmount.ToString("N0") VND</dd>
 
-                    <dt class="col-sm-3">Ngày tạo</dt>
+                    <dt class="col-sm-3">@L("CreationTime")</dt>
                     <dd class="col-sm-9">@Model.CreationTime.ToString("dd/MM/yyyy HH:mm")</dd>
                 </dl>
 
-                <h6 class="mt-3">Danh sách sản phẩm</h6>
+                <h6 class="mt-3">@L("OrderItems")</h6>
                 <table class="table table-bordered table-sm">
                     <thead>
                         <tr>
-                            <th>Sản phẩm</th>
-                            <th>Số lượng</th>
-                            <th>Giá</th>
-                            <th>Thành tiền</th>
+                            <th>@L("Product")</th>
+                            <th>@L("Quantity")</th>
+                            <th>@L("Price")</th>
+                            <th>@L("TotalPrice")</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -58,7 +58,7 @@
                 </table>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@L("Close")</button>
             </div>
         </div>
     </div>

@@ -9,39 +9,67 @@ using System.Threading.Tasks;
 using System.Linq.Dynamic.Core;
 using Abp.Application.Services;
 using Microsoft.AspNetCore.Authorization;
+using System;
+using proj_tt.Products;
 
 namespace proj_tt.Categories
 {
     public interface ICategoriesFrontendAppService: IApplicationService
     {
-        Task<PagedResultDto<CategoriesDto>> GetAll(PagedCategoriesDto input);
+        Task<PagedResultDto<CategoryListDto>> GetCategory(GetAllCategory input);
     }
     [AllowAnonymous]
 
     public class CategoriesFrontendAppService : proj_ttAppServiceBase, ICategoriesFrontendAppService
     {
         private readonly IRepository<Category> _categoryRepository;
+        private readonly IRepository<Product> _productRepository;
 
-        public CategoriesFrontendAppService(IRepository<Category> categoryRepository)
+        public CategoriesFrontendAppService(IRepository<Category> categoryRepository,IRepository<Product> productRepository )
         {
             _categoryRepository = categoryRepository;
+            _productRepository = productRepository;
         }
         [AllowAnonymous]
-        public async Task<PagedResultDto<CategoriesDto>> GetAll(PagedCategoriesDto input)
+
+        public async Task<PagedResultDto<CategoryListDto>> GetCategory(GetAllCategory input)
         {
-            var categories = _categoryRepository.GetAll();
-            if (!string.IsNullOrWhiteSpace(input.Keyword))
+            using var uow = UnitOfWorkManager.Begin();
+            using (CurrentUnitOfWork.SetTenantId(AbpSession.TenantId))
             {
-                categories = categories.Where(p => p.NameCategory.Contains(input.Keyword));
+                try
+                {
+                    var query = _categoryRepository.GetAll();
+
+                    // ✅ Thêm điều kiện tìm kiếm
+                    if (!string.IsNullOrWhiteSpace(input.Keyword))
+                    {
+                        query = query.Where(x => x.NameCategory.Contains(input.Keyword));
+                    }
+
+                    var totalCount = await query.CountAsync();
+
+                    var categoryDtos = await query
+                        .OrderBy(x => x.NameCategory)
+                        .PageBy(input)
+                        .Select(p => new CategoryListDto
+                        {
+                            Id = p.Id,
+                            NameCategory = p.NameCategory
+                        })
+                        .ToListAsync();
+
+                    return new PagedResultDto<CategoryListDto>(totalCount, categoryDtos);
+                }
+                catch
+                {
+                    return null;
+                }
+                finally
+                {
+                    await uow.CompleteAsync();
+                }
             }
-
-            var count = await categories.CountAsync();
-
-            input.Sorting = "CreationTime DESC";
-
-            var items = await categories.OrderBy(input.Sorting).PageBy(input).ToListAsync();
-
-            return new PagedResultDto<CategoriesDto> { TotalCount = count, Items = ObjectMapper.Map<List<CategoriesDto>>(items) };
         }
 
     }

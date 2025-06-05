@@ -32,7 +32,7 @@ namespace proj_tt.Web.Controllers
         {
             var products = await _userProductAppService.GetAllAsync(new PagedProductDto());
 
-            var categories = await _categoryFrontendAppService.GetAll(new PagedCategoriesDto());
+            var categories = await _categoryFrontendAppService.GetCategory(new GetAllCategory());
             var categoryItems = categories.Items.Select(c => new SelectListItem
             {
                 Value = c.Id.ToString(),
@@ -70,7 +70,7 @@ namespace proj_tt.Web.Controllers
             };
 
             var products = await _userProductAppService.GetAllAsync(input);
-            var categories = await _categoryFrontendAppService.GetAll(new PagedCategoriesDto());
+            var categories = await _categoryFrontendAppService.GetCategory(new GetAllCategory());
 
             var categoryItems = categories.Items.Select(c => new SelectListItem
             {

@@ -15,6 +15,8 @@ namespace proj_tt.Order.Dto
         public string Address { get; set; }
         public string Note { get; set; }
         public string PhoneNumber { get; set; }
+        public int Quantity { get; set; }
+        public decimal TotalPrice { get; set; }
         public List<CreateOrderItemInput> Items { get; set; } = new();
     }
 }

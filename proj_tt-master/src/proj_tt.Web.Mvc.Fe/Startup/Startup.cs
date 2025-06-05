@@ -83,16 +83,21 @@ namespace proj_tt.Web.Startup
             }
 
             app.UseStaticFiles();
-
-
             var sharedImagePath = Path.GetFullPath(Path.Combine(env.ContentRootPath, @"..\Product\ProductImages"));
-
-
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(sharedImagePath),
                 RequestPath = "/ProductImages"
             });
+
+            //var sharedImagePath = Path.GetFullPath(Path.Combine(env.ContentRootPath, @"..\Product\ProductImages"));
+
+
+            //app.UseStaticFiles(new StaticFileOptions
+            //{
+            //    FileProvider = new PhysicalFileProvider(sharedImagePath),
+            //    RequestPath = "/ProductImages"
+            //});
             app.UseRouting();
 
             app.UseAuthentication();

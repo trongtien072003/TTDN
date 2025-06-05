@@ -1,4 +1,4 @@
-﻿var orderItems = []; 
+﻿var orderItems = [];
 
 function renderOrderItems() {
     var $container = $('#orderItemsList');

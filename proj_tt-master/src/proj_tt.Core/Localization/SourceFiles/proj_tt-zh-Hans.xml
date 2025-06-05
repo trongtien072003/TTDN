@@ -97,7 +97,18 @@
     <text name="DeleteTenantConfirm">确认删除该租户？</text>
     <text name="EditTenant">编辑租户</text>
     <text name="SearchWithThreeDot">搜索...</text>
-    
+	  <text name="OrderManagement" value="订单管理" />
+	  <text name="AllStatuses" value="所有状态" />
+	  <text name="Export" value="导出" />
+	  <text name="ConfirmUpdateOrder" value="您确定要更新订单吗？" />
+	  <text name="OrderUpdated" value="订单已成功更新。" />
+	  <text name="ErrorOccurred" value="发生错误。" />
+	  <text name="MissingOrInvalidData" value="数据缺失或无效。" />
+	  <text name="Confirm" value="确认" />
+	  <text name="UpdateOrder" value="更新订单" />
+	  <text name="CustomerName" value="客户姓名" />
+	  <text name="OrderItems" value="商品列表" />
+	  <text name="Orders" value="命令" />
   </texts>
 </localizationDictionary>
 

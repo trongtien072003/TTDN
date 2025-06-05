@@ -1,0 +1,11 @@
+﻿@model CategoryMenuViewModel
+@using proj_tt.Web.Views.Shared.Components.CategoryMenu
+
+<ul class="dropdown-menu" aria-labelledby="categoryDropdown">
+    @foreach (var category in Model.Categories.Items)
+    {
+        <li>
+            <a class="dropdown-item" href="/products?categoryId=@category.Id">@category.NameCategory</a>
+        </li>
+    }
+</ul> 

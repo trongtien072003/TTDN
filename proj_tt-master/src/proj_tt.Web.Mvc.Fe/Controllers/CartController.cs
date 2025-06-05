@@ -36,7 +36,8 @@ namespace proj_tt.Web.Controllers
                     ProductName = x.ProductName,
                     Quantity = x.Quantity,
                     UnitPrice = x.UnitPrice,
-                    TotalPrice = x.TotalPrice
+                    TotalPrice = x.TotalPrice,
+                     ProductImage = x.ProductImage
                 }).ToList()
             };
 

@@ -148,6 +148,18 @@
 		<text name="FilterByDate">Lọc theo ngày</text>
 		<text name="Start date">Ngày bắt đầu</text>
 		<text name="End date">Đến ngày </text>
+		<text name="OrderManagement" value="Quản lý đơn hàng" />
+		<text name="AllStatuses" value="Tất cả trạng thái" />
+		<text name="Export" value="Xuất" />
+		<text name="ConfirmUpdateOrder" value="Bạn có chắc muốn cập nhật đơn hàng?" />
+		<text name="OrderUpdated" value="Đã cập nhật đơn hàng." />
+		<text name="ErrorOccurred" value="Có lỗi xảy ra." />
+		<text name="MissingOrInvalidData" value="Thiếu hoặc sai dữ liệu." />
+		<text name="Confirm" value="Xác nhận" />
+		<text name="UpdateOrder" value="Cập nhật đơn hàng" />
+		<text name="CustomerName" value="Tên khách hàng" />
+		<text name="OrderItems" value="Danh sách sản phẩm" />
+		<text name="Orders" value="Đặt hàng" />
 	</texts>
 </localizationDictionary>
  

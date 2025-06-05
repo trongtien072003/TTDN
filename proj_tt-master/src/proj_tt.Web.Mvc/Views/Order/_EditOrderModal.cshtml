@@ -7,16 +7,16 @@
             <form id="OrderEditForm">
                 <input type="hidden" name="Id" value="@Model.Id" />
                 <div class="modal-header">
-                    <h5 class="modal-title">Cập nhật đơn hàng #@Model.Id</h5>
+                    <h5 class="modal-title">@L("UpdateOrder") #@Model.Id</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label">Ghi chú</label>
+                        <label class="form-label">@L("Note")</label>
                         <textarea name="Note" class="form-control">@Model.Note</textarea>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Trạng thái</label>
+                        <label class="form-label">@L("Status")</label>
                         <select name="Status" class="form-control">
                             @foreach (OrderStatus status in Enum.GetValues(typeof(OrderStatus)))
                             {
@@ -28,8 +28,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Lưu</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-primary">@L("Save")</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@L("Close")</button>
                 </div>
             </form>
         </div>
@@ -48,10 +48,10 @@ $(document).on('submit', '#OrderEditForm', function (e) {
     };
 
     if (!formData.id || isNaN(formData.status)) {
-        return abp.message.error("Thiếu hoặc sai dữ liệu.");
+        return abp.message.error("@L("MissingOrInvalidData")");
     }
 
-    abp.message.confirm("Bạn có chắc muốn cập nhật đơn hàng?", "Xác nhận", function (confirmed) {
+    abp.message.confirm("@L("ConfirmUpdateOrder")", "@L("Confirm")", function (confirmed) {
         if (!confirmed) return;
 
         abp.ajax({
@@ -60,11 +60,11 @@ $(document).on('submit', '#OrderEditForm', function (e) {
             data: JSON.stringify(formData),
             contentType: 'application/json',
         }).done(function () {
-            abp.notify.success("Đã cập nhật đơn hàng.");
+            abp.notify.success("@L("OrderUpdated")");
             $('#OrderEditModal').modal('hide');
             $('#OrdersTable').DataTable().ajax.reload();
         }).fail(function (error) {
-            const msg = error?.responseJSON?.error?.message || "Có lỗi xảy ra.";
+            const msg = error?.responseJSON?.error?.message || "@L("ErrorOccurred")";
             abp.message.error(msg);
         });
     });

@@ -16,5 +16,7 @@ namespace proj_tt.Cart
         Task UpdateCartItemQuantityAsync(UpdateCartItemInput input);
         Task RemoveCartItemAsync(RemoveFromCartInput input);
         Task ClearCartAsync();
+        Task<int> CountCartItemsAsync();
+        //Task<int> CountCartAsync();
     }
 }

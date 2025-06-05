@@ -139,5 +139,17 @@
     <text name="403PageHeader">Forbidden</text>
     <text name="403PageDescription">You don't have permission to access this resource. Please contact your administrator.</text>
     <text name="403PageButton">Go back to Dashboard</text>
+	  <text name="OrderManagement" value="Order Management" />
+	  <text name="AllStatuses" value="All Statuses" />
+	  <text name="Export" value="Export" />
+	  <text name="ConfirmUpdateOrder" value="Are you sure you want to update the order?" />
+	  <text name="OrderUpdated" value="Order updated successfully." />
+	  <text name="ErrorOccurred" value="An error occurred." />
+	  <text name="MissingOrInvalidData" value="Missing or invalid data." />
+	  <text name="Confirm" value="Confirm" />
+	  <text name="UpdateOrder" value="Update Order" />
+	  <text name="CustomerName" value="Customer Name" />
+	  <text name="OrderItems" value="Order Items" />
+	  <text name="Orders" value="Order " />  
   </texts>
 </localizationDictionary>

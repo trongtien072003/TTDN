@@ -44,8 +44,8 @@ namespace proj_tt.Order
             var cart = await _cartRepository.GetAllIncluding(c => c.Items)
                         .FirstOrDefaultAsync(c => c.UserId == userId);
 
-            if (cart == null || cart.Items == null || !cart.Items.Any())
-                throw new UserFriendlyException("Giỏ hàng trống");
+            if (cart == null || cart.Items == null || !cart.Items.Any(i => i.Quantity > 0))
+                throw new UserFriendlyException("Giỏ hàng trống hoặc sản phẩm không hợp lệ.");
 
             var order = new Orders
             {
@@ -55,23 +55,25 @@ namespace proj_tt.Order
                 PhoneNumber = input.PhoneNumber,
                 Address = input.Address,
                 Note = input.Note,
-                Status = OrderStatus.Pending,
                 TotalAmount = 0,
                 OrderItems = new List<OrderItem>()
             };
 
             foreach (var item in cart.Items)
             {
+                var totalPrice = item.UnitPrice * item.Quantity;
+
                 var orderItem = new OrderItem
                 {
                     ProductId = item.ProductId,
                     ProductName = item.ProductName,
                     Quantity = item.Quantity,
                     Price = item.UnitPrice,
+                    TotalPrice = totalPrice,
                     CreationTime = Clock.Now
                 };
 
-                order.TotalAmount += orderItem.TotalPrice;
+                order.TotalAmount += totalPrice;
                 order.OrderItems.Add(orderItem);
             }
 
@@ -79,6 +81,7 @@ namespace proj_tt.Order
             await _cartItemRepository.DeleteAsync(i => i.CartId == cart.Id);
             await _cartRepository.DeleteAsync(cart);
         }
+
         /// <summary>
         /// Lấy danh sách đơn hàng của người dùng hiện tại với hỗ trợ lọc, tìm kiếm và phân trang.
         /// Trả về danh sách đơn hàng kèm các sản phẩm trong đơn.

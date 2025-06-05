@@ -1,113 +1,86 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Details</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    @section scripts
-    {
-        <environment names="Development">
-            <script src="~/view-resources/Views/Home/Index.js" asp-append-version="true"></script>
-        </environment>
-        
+﻿@section scripts {
+<script src="~/view-resources/Views/Home/Index.js" asp-append-version="true"></script>
+}
 
+<header class="sticky-top">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white py-3 shadow-sm">
+        <div class="container-fluid">
+            <!-- Logo -->
+            <a class="navbar-brand text-primary fw-bold" href="/">
+                <i class="fas fa-shopping-bag me-2"></i>ShopOnline
+            </a>
 
-    }
-    <style>
-        .navbar {
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
+            <!-- Toggle for mobile -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-        .search-box {
-            min-width: 300px;
-        }
+            <!-- Navigation content -->
+            <div class="collapse navbar-collapse" id="navbarMain">
+                <!-- Search -->
+                <form class="d-flex mx-auto search-box" method="get" action="/products">
+                    <div class="input-group">
+                        <input type="text" name="keyword" id="searchBox" class="form-control" placeholder="Search products..." aria-label="Search">
+                        <button class="btn btn-outline-secondary" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </form>
 
-        .cart-badge {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            font-size: 0.7rem;
-        }
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <!-- Category dropdown -->
+                  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" id="categoryDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fas fa-list me-1"></i> Danh mục
+    </a>
+    @await Component.InvokeAsync("CategoryMenu")
+</li>
 
-        .nav-link {
-            font-weight: 500;
-        }
+                    <!-- Wishlist -->
+                    <li class="nav-item me-2">
+                        <a href="#" class="btn btn-outline-secondary" title="Wishlist">
+                            <i class="far fa-heart"></i>
+                        </a>
+                    </li>
 
-        .navbar-brand {
-            font-weight: 700;
-            font-size: 1.5rem;
-        }
-    </style>
-</head>
-<body>
-    <!-- Header -->
-    <header class="sticky-top">
-        <nav class="navbar navbar-expand-lg navbar-light bg-white py-3">
-            <div class="container">
-                <!-- Brand Logo -->
-                <a class="navbar-brand text-primary" href="#">
-                    <i class="fas fa-shopping-bag me-2"></i>ShopOnline
-                </a>
+                    <!-- Cart -->
+                    <li class="nav-item me-2 position-relative">
+                        <a href="/Cart" class="btn btn-outline-primary position-relative" title="Cart">
+                            <i class="fas fa-shopping-cart"></i>
+                            @await Component.InvokeAsync("CartMenu")
+                        </a>
+                    </li>
 
-                <!-- Mobile Toggle Button -->
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-
-                    <!-- Search and Cart -->
-                    <div class="d-flex align-items-left">
-                        <!-- Search Form -->
-                        <form class="d-flex me-3 search-box">
-                            <div class="input-group">
-                                <input type="text" id="searchBox" class="form-control" placeholder="Search products..." aria-label="Search">   
-                                <button class="btn btn-outline-secondary" type="submit">
-                                    <i class="fas fa-search"></i>
-                                </button>
-                            </div>
-                        </form>
-
-                        <!-- User Actions -->
-                        <div class="d-flex">
-                            <a href="#" class="btn btn-outline-secondary me-2" title="Wishlist">
-                                <i class="far fa-heart"></i>
-                            </a>
-                            <div class="position-relative">
-                                <a href="/Cart" class="btn btn-outline-primary position-relative" title="Cart">
-                                    <i class="fas fa-shopping-cart"></i>
-                                    <span class="cart-badge badge rounded-pill bg-danger">3</span>
-                                </a>
-                            </div>
-                            <div class="dropdown ms-3">
-                                <a href="#" class="nav-link dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown">
-                                    <i class="fas fa-user-circle fs-5"></i>
-                                </a>
-                            <ul class="dropdown-menu dropdown-menu-end">
+                    <!-- Dropdown user -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" data-bs-toggle="dropdown">
+                            <i class="fas fa-user-circle fs-5"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
                                 <a class="dropdown-item" asp-controller="UserOrder" asp-action="Index">
                                     <i class="fas fa-box-open me-2"></i> @L("MyOrder")
                                 </a>
+                            </li>
+                            <li>
                                 <a class="dropdown-item" asp-controller="Users" asp-action="ChangePassword">
                                     <i class="fas fa-user-edit me-2"></i> @L("UpdatePassword")
                                 </a>
+                            </li>
+                            <li>
                                 <a class="dropdown-item" asp-controller="Account" asp-action="Logout">
                                     <i class="fas fa-sign-out-alt me-2"></i> @L("Logout")
                                 </a>
-                                <li><a class="dropdown-item" href="/account/register"><i class="fas fa-sign-out-alt me-2"></i>Register</a></li>
-                            </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="/account/register">
+                                    <i class="fas fa-user-plus me-2"></i> @L("Register")
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
             </div>
-        </nav>
-
-       
-    </header>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+        </div>
+    </nav>
+</header>

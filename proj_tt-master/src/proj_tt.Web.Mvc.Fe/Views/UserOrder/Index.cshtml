@@ -3,6 +3,12 @@
 @{
     ViewBag.Title = "My Orders";
 }
+@if (Context.Request.Query["success"] == "true")
+{
+    <script>
+        abp.message.success("Đặt hàng thành công!", "Thành công");
+    </script>
+}
 
 <div class="container py-4">
     <h2 class="mb-4 fw-bold">My Orders</h2>
@@ -51,11 +57,12 @@
                         <td>@(order.OrderItems?.Count ?? 0) item(s)</td>
                         <td><strong>@order.TotalAmount.ToString("C0")</strong></td>
                         <td>
+                            <button class="btn btn-sm btn-outline-info view-order" data-id="@order.Id">
+                                Chi tiết
+                            </button>
                             @if (order.Status == OrderStatus.Pending)
                             {
-                                <form method="post" asp-action="Cancel" asp-route-id="@order.Id" onsubmit="return confirm('Cancel this order?');">
-                                    <button type="submit" class="btn btn-sm btn-danger">Cancel</button>
-                                </form>
+                                <button type="button" class="btn btn-sm btn-danger" onclick="confirmCancel(@order.Id)">Cancel</button>
                             }
                             else
                             {
@@ -80,33 +87,44 @@
     </nav>
 
     <!-- Summary -->
-    <div class="row text-center mt-4">
-        <div class="col-md-3">
+    <div class="row text-center mt-4 g-3">
+        <div class="col-md-2">
             <div class="bg-light p-3 rounded shadow-sm">
-                <h5>Total Orders</h5>
-                <p class="fw-bold text-primary">@Model.Orders.Count</p>
+                <h6 class="mb-1">Total Orders</h6>
+                <p class="fw-bold text-primary mb-0">@Model.Orders.Count</p>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div class="bg-light p-3 rounded shadow-sm">
-                <h5>Delivered</h5>
-                <p class="fw-bold text-success">@Model.Orders.Count(o => o.Status == OrderStatus.Delivered)</p>
+                <h6 class="mb-1">Delivered</h6>
+                <p class="fw-bold text-success mb-0">@Model.Orders.Count(o => o.Status == OrderStatus.Delivered)</p>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div class="bg-light p-3 rounded shadow-sm">
-                <h5>Processing</h5>
-                <p class="fw-bold text-warning">@Model.Orders.Count(o => o.Status == OrderStatus.Processing)</p>
+                <h6 class="mb-1">Processing</h6>
+                <p class="fw-bold text-warning mb-0">@Model.Orders.Count(o => o.Status == OrderStatus.Processing)</p>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div class="bg-light p-3 rounded shadow-sm">
-                <h5>Cancelled</h5>
-                <p class="fw-bold text-danger">@Model.Orders.Count(o => o.Status == OrderStatus.Cancelled)</p>
+                <h6 class="mb-1">Pending</h6>
+                <p class="fw-bold text-secondary mb-0">@Model.Orders.Count(o => o.Status == OrderStatus.Pending)</p>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="bg-light p-3 rounded shadow-sm">
+                <h6 class="mb-1">Shipped</h6>
+                <p class="fw-bold text-info mb-0">@Model.Orders.Count(o => o.Status == OrderStatus.Shipped)</p>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="bg-light p-3 rounded shadow-sm">
+                <h6 class="mb-1">Cancelled</h6>
+                <p class="fw-bold text-danger mb-0">@Model.Orders.Count(o => o.Status == OrderStatus.Cancelled)</p>
             </div>
         </div>
     </div>
-</div>
 
 @section Scripts {
 <script>
@@ -124,6 +142,61 @@
         url.searchParams.set("statusStr", status);
         window.location.href = url.toString();
     }
+  function cancelOrder(orderId) {
+                if (!confirm("Bạn có chắc chắn muốn huỷ đơn hàng này không?")) return;
+
+                fetch(`/orders/cancel/${orderId}`, {
+                    method: 'POST',
+                    headers: {
+                        'RequestVerificationToken': getAntiForgeryToken()
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert("Đã huỷ đơn hàng thành công.");
+                        location.reload();
+                    } else {
+                        alert("Huỷ đơn hàng thất bại.");
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                    alert("Lỗi hệ thống khi huỷ đơn.");
+                });
+ }
+             function showOrderDetail(orderId) {
+                abp.ui.setBusy();
+
+                $.ajax({
+                    url: `/orders/details/${orderId}`,
+                    method: 'GET',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    success: function (html) {
+                        $('#OrderDetailContainer').html(html);
+
+                        // Hiển thị Bootstrap modal
+                        const modal = new bootstrap.Modal(document.getElementById('UserOrderDetail'));
+                        modal.show();
+                    },
+                    error: function (xhr) {
+                        console.error(xhr.responseText || xhr);
+                        abp.message.error("Không thể hiển thị chi tiết đơn hàng", "Lỗi");
+                    },
+                    complete: function () {
+                        abp.ui.clearBusy();
+                    }
+                });
+            }
+                          // View modal
+                  $(document).on('click', '.view-order', function () {
+                const id = $(this).data('id');
+                $.get(`/orders/view-modal/${id}`, function (html) {
+                    $('#OrderDetailModalContainer').html(html);
+                    $('#OrderDetailModal').modal('show');
+                }).fail(() => abp.message.error("Không thể tải chi tiết đơn hàng."));
+            });
 </script>
 }
 

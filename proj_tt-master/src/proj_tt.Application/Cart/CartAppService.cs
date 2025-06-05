@@ -38,7 +38,24 @@ namespace proj_tt.Cart
                 return new List<CartItemDto>();
 
             var items = await _cartItemRepository.GetAllListAsync(x => x.CartId == cart.Id);
-            return items.Select(MapCartItemDto).ToList();
+
+            // ✅ Load thêm ProductImage đầy đủ
+            var productIds = items.Select(i => i.ProductId).Distinct().ToList();
+            var productImages = await _productRepository.GetAll()
+                .Where(p => productIds.Contains(p.Id))
+                .ToDictionaryAsync(p => p.Id, p => string.IsNullOrEmpty(p.ImageUrl) ? "/ProductImages/default.png" : p.ImageUrl);
+
+            return items.Select(item => new CartItemDto
+            {
+                Id = item.Id,
+                CartId = item.CartId,
+                ProductId = item.ProductId,
+                ProductName = item.ProductName,
+                Quantity = item.Quantity,
+                UnitPrice = item.UnitPrice,
+                TotalPrice = item.TotalPrice,
+                ProductImage = productImages.ContainsKey(item.ProductId) ? productImages[item.ProductId] : "/ProductImages/default.png"
+            }).ToList();
         }
 
         public async Task AddToCartAsync(AddToCartInput input)
@@ -65,10 +82,12 @@ namespace proj_tt.Cart
                 existingItem.TotalPrice = existingItem.Quantity * unitPrice;
                 existingItem.ProductName = product.Name;
               
+
                 await _cartItemRepository.UpdateAsync(existingItem);
             }
             else
             {
+                var imageUrl = string.IsNullOrEmpty(product.ImageUrl) ? "/ProductImages/default.png" : product.ImageUrl;
                 var newItem = new CartItem
                 {
                     CartId = cartId,
@@ -76,7 +95,7 @@ namespace proj_tt.Cart
                     ProductName = product.Name,
                     Quantity = input.Quantity,
                     UnitPrice = unitPrice,
-                    ProductImage = product.ImageUrl,
+                    ProductImage = imageUrl,
                     TotalPrice = input.Quantity * unitPrice
                 };
                 await _cartItemRepository.InsertAsync(newItem);
@@ -149,8 +168,37 @@ namespace proj_tt.Cart
                 ProductName = x.ProductName,
                 Quantity = x.Quantity,
                 UnitPrice = x.UnitPrice,
-                TotalPrice = x.TotalPrice
+                TotalPrice = x.TotalPrice,
+                 ProductImage = x.ProductImage
             };
+
         }
+        public async Task<int> CountCartItemsAsync()
+        {
+            var userId = GetCurrentUserId();
+
+            var cart = await _cartRepository.FirstOrDefaultAsync(c => c.UserId == userId);
+            if (cart == null)
+                return 0;
+
+            var itemCount = await _cartItemRepository.CountAsync(x => x.CartId == cart.Id);
+            return itemCount;
+        }
+        //public async Task<int> CountCartAsync()
+        //{
+        //    var userId = GetCurrentUserId();
+
+        //    var cart = await _cartRepository.FirstOrDefaultAsync(c => c.UserId == userId);
+        //    if (cart == null)
+        //        return 0;
+
+        //    var totalQuantity = await _cartItemRepository.GetAll()
+        //        .Where(x => x.CartId == cart.Id)
+        //        .SumAsync(x => x.Quantity);
+
+        //    return totalQuantity;
+        //}
+
+
     }
 }

@@ -21,21 +21,22 @@
                     {
                         <div class="row align-items-center mb-4 border-bottom pb-3">
                             <div class="col-2">
-                                <img src="@item.ProductImage" alt="@item.ProductName" class="img-fluid rounded" />
+                                <img src="@item.ProductImage" alt="@item.ProductName" width="100" height="100" class="rounded border">
                             </div>
                             <div class="col-4">
                                 <h6>@item.ProductName</h6>
-                                <small class="text-muted">@item.Quantity x $@item.UnitPrice.ToString("0.00")</small>
+                                <small class="text-muted">@item.Quantity x @item.UnitPrice.ToString("N0") đ</small>
                             </div>
                             <div class="col-3 d-flex align-items-center">
                                 <form asp-action="UpdateQuantity" method="post" class="d-flex">
                                     <input type="hidden" name="CartItemId" value="@item.Id" />
-                                    <input type="number" name="Quantity" value="@item.Quantity" class="form-control form-control-sm w-50 me-1" min="0" />
+                                    <input type="number" name="Quantity" value="@item.Quantity"
+                                           class="form-control form-control-sm w-50 me-1" min="0" />
                                     <button type="submit" class="btn btn-sm btn-outline-secondary">↻</button>
                                 </form>
                             </div>
                             <div class="col-2 text-end">
-                                <strong>$@item.TotalPrice.ToString("0.00")</strong>
+                                <strong>@item.TotalPrice đ</strong>
                             </div>
                             <div class="col-1 text-end">
                                 <form asp-action="RemoveItem" method="post">
@@ -65,7 +66,7 @@
                     <h5 class="mb-3">Order Summary</h5>
                     <div class="d-flex justify-content-between">
                         <span>Subtotal (@Model.TotalQuantity item(s))</span>
-                        <strong>$@Model.TotalAmount</strong>
+                        <strong>@Model.TotalAmount.ToString("N0") đ</strong>
                     </div>
                     <div class="d-flex justify-content-between">
                         <span>Shipping</span>
@@ -73,12 +74,12 @@
                     </div>
                     <div class="d-flex justify-content-between mb-3">
                         <span>Tax</span>
-                        <span>$@(Model.TotalAmount * 0.08m)</span>
+                        <span>@(Model.TotalAmount * 0.08m).ToString("N0") đ</span>
                     </div>
                     <hr />
                     <div class="d-flex justify-content-between mb-3">
                         <strong>Total</strong>
-                        <strong class="text-primary">$@(Model.TotalAmount * 1.08m)</strong>
+                        <strong class="text-primary">@((Model.TotalAmount * 1.08m).ToString("N0")) đ</strong>
                     </div>
                     <a href="/orders/checkout" class="btn btn-primary w-100">Proceed to Checkout</a>
                     <p class="text-center text-muted mt-2" style="font-size: 0.85rem;">
